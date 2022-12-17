@@ -7,7 +7,7 @@ router.route('/')
   res.status(200).json({ status: req.method + ' on /proposal.' });
 })
 .post(function(req, res) {
-  res.status(200).json({ status: req.method + ' on /proposal.' });
+  res.status(404).json({ status: req.method + ' on /proposal.' });
 })
 .put(function(req, res) {
   res.status(200).json({ status: req.method + ' on /proposal.' });
