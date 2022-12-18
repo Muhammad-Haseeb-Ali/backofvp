@@ -10,8 +10,8 @@ videosDir = directoryPath("/videos")
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if(!fs.existsSync(process.cwd() + 'videos/new'))
-    fs.mkdirSync('videos/new')
-    cb(null, 'videos/new')
+    fs.mkdirSync(process.cwd() + 'videos/new')
+    cb(null, process.cwd() + 'videos/new')
   },
   filename: function (req, file, cb) {
     cb(null,file.originalname)
