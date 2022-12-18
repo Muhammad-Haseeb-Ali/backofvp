@@ -7,6 +7,9 @@ const path = require("path")
 const directoryPath = e => path.join(process.cwd(), e),
 videosDir = directoryPath("/videos")
 
+if(!fs.existsSync(videosDir))
+fs.mkdirSync(videosDir)
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if(!fs.existsSync(process.cwd() + '/videos/new'))
