@@ -40,7 +40,7 @@ router.route('/')
 
 router.route('/:id')
 .get(function(req, res) {
-  if(!fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
+  if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
   res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
 
   res.status(404).json({ status: "This file is not uploaded yet." });
