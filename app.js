@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var proposalRouter = require('./routes/proposal');
 
 var app = express(),
-    port = process.env.PORT || "3000"
+    port = process.env.PORT || "8000"
 
 app.use(CORS());
 app.use(logger('dev'));
