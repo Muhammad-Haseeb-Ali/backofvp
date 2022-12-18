@@ -40,8 +40,25 @@ router.route('/')
 
 router.route('/:id')
 .get(function(req, res) {
-  if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
-  res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
+  if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}`)){
+    if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
+    res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
+    else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)) {
+      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)
+      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}`)
+      res.status(200).json({ status: req.method + 'new file is exist with only screen video files' });
+    }
+    else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)) {
+      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)
+      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}`)
+      res.status(200).json({ status: req.method + 'new file is exist with only screen video files' });
+    }
+    else
+    {
+      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}`)
+          res.status(200).json({ status: req.method + 'new file is exist but there is no video files' });
+    }
+  }
 
   res.status(404).json({ status: "This file is not uploaded yet." });
 })
