@@ -20,4 +20,4 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/proposal', proposalRouter);
 
-app.listen(port,'0.0.0.0')
+app.listen(port)
