@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
   }
 })
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage })
 
 
 router.route('/')
@@ -44,18 +44,13 @@ router.route('/:id')
     if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
     else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)) {
-      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)
-      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}`)
       res.status(200).json({ status: req.method + 'new file is exist with only screen video files' });
     }
     else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)) {
-      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)
-      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}`)
       res.status(200).json({ status: req.method + 'new file is exist with only screen video files' });
     }
     else
     {
-      fs.unlinkSync(`${process.cwd()}/videos/${req.params.id}`)
           res.status(200).json({ status: req.method + 'new file is exist but there is no video files' });
     }
   }
