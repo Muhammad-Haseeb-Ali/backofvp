@@ -12,9 +12,9 @@ fs.mkdirSync(videosDir)
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if(!fs.existsSync(process.cwd() + '/videos/new'))
-    fs.mkdirSync(process.cwd() + '/videos/new')
-    cb(null, process.cwd() + '/videos/new')
+    if(!fs.existsSync(process.cwd() + '/videos/' + req.params.id))
+    fs.mkdirSync(process.cwd() + '/videos/' + req.params.id)
+    cb(null, process.cwd() + '/videos/' + req.params.id)
   },
   filename: function (req, file, cb) {
     cb(null,file.originalname)
@@ -28,7 +28,7 @@ router.route('/')
 .get(function(req, res) {
   res.status(200).json({ status: req.method + ' on /proposal.' });
 })
-.post(upload.array("videos",2) , function(req, res){
+.post(function(req, res){
     res.status(200).json({ status: req.method + ' on /proposal.' });
 })
 .put(function(req, res) {
@@ -57,7 +57,7 @@ router.route('/:id')
 
   res.status(404).json({ status: "This file is not uploaded yet." });
 })
-.post(function(req, res){
+.post(upload.array("videos",2) , function(req, res){
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
 })
 .put(function(req, res) {
