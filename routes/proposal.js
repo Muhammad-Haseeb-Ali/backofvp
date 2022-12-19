@@ -44,10 +44,10 @@ router.route('/:id')
     if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
     else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)) {
-      res.status(200).json({ status: req.method + 'new file is exist with only screen video files' });
+      res.status(200).json({ status: req.method + req.params.id + ' folder is exist with only face video files' });
     }
     else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)) {
-      res.status(200).json({ status: req.method + 'new file is exist with only screen video files' });
+      res.status(200).json({ status: req.method + req.params.id + ' folder is exist with only screen video files' });
     }
     else
     {
