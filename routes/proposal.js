@@ -56,7 +56,7 @@ router.route('/:id')
           res.status(200).json({ status: req.method + 'new file is exist but there is no video files' });
     }
   }
-
+  else
   res.status(404).json({ status: "This file is not uploaded yet." });
 })
 .post(upload.fields([{name:"face", maxCount: 1},{name:"screen", maxCount: 1}]) ,
