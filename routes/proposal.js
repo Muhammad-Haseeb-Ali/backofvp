@@ -14,9 +14,11 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if(!fs.existsSync(process.cwd() + '/videos/' + req.params.id))
     fs.mkdirSync(process.cwd() + '/videos/' + req.params.id)
+    console.log(`>>${process.cwd()}/videos/${req.params.id}`)
     cb(null, process.cwd() + '/videos/' + req.params.id)
   },
   filename: function (req, file, cb) {
+    console.log(`saving ${file.originalname}`)
     cb(null,file.originalname)
   }
 })
@@ -43,10 +45,10 @@ router.route('/:id')
   if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}`)){
     if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`))
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
-    else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)) {
+    else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`) && !fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)) {
       res.status(200).json({ status: req.method + req.params.id + ' folder is exist with only face video files' });
     }
-    else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`)) {
+    else if (fs.existsSync(`${process.cwd()}/videos/${req.params.id}/screen.mp4`) && !fs.existsSync(`${process.cwd()}/videos/${req.params.id}/face.mp4`)) {
       res.status(200).json({ status: req.method + req.params.id + ' folder is exist with only screen video files' });
     }
     else
