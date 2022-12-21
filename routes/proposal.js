@@ -57,7 +57,8 @@ router.route('/:id')
 
   res.status(404).json({ status: "This file is not uploaded yet." });
 })
-.post(upload.array("videos",2) , function(req, res){
+.post(upload.fields([{name:"face", maxCount: 1},{name:"screen", maxCount: 1}]) ,
+      function(req, res){
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
 })
 .put(function(req, res) {
