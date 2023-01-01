@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     console.log("file method in filename object: ", file)
-    console.log(`saving ${file.originalname}`)
-    cb(null,file.originalname)
+    console.log(`saving ${file.originalname} with name ${req.params.types}.mp4`)
+    cb(null, req.params.type + 'mp4')
   }
 })
 
@@ -61,9 +61,7 @@ router.route('/:id')
   else
   res.status(404).json({ status: "This file is not uploaded yet." });
 })
-.post(upload.fields([{name:"face", maxCount: 1},{name:"screen", maxCount: 1}]) ,
-      function(req, res, next){
-        console.log("Saved Files: ", req.files)
+.post(function(req, res){
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
 })
 .put(function(req, res) {
@@ -77,6 +75,26 @@ router.route('/:id')
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
   }
   res.status(404).json({ status: "This file is not uploaded yet." });
+});
+
+router.route('/:id/video/:type')
+.get(function(req, res) {
+  if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/${req.params.type}.mp4`)){
+    req.status(200).json({ status: "This file is save in its directory." })
+  }
+  else
+  res.status(404).json({ status: "This file is not uploaded yet." });
+})
+.post(upload.single(req.params.type) ,
+      function(req, res, next){
+        console.log("Saved Files: ", req.files)
+    res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
+})
+.put(function(req, res) {
+  res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id + '/video/' + req.params.type});
+})
+.delete(function(req, res) {
+  res.status(404).json({ status: req.method + ' on /proposal/' + req.params.id + '/video/' + req.params.type});
 });
 
 module.exports = router;
