@@ -85,42 +85,33 @@ router.route('/:id/video/:type')
   videoType = req.params.type,
   videoPath = `${videosDir}/${videoId}/${videoType}.mp4`;
 
+  if(!fs.existsSync(videoPath)){
+  console.log('video is not exist')
+  return res.status(404).send("Video file is not exist");
+  }
 
-if(!fs.existsSync(videoPath)){
-console.log('video is not exist')
-return res.status(404).send("Video file is not exist");
-}
+  if (!range) {
+  console.log('range is not define')
+  return res.status(400).send("Rang must be provided");
+  }
 
-if (!range) {
-console.log('range is not define')
-return res.status(400).send("Rang must be provided");
-}
-
-const videoSizeInBytes = fs.statSync(videoPath).size;
-
-const chunkStart = Number(range.replace(/\D/g, ""));
-
-const chunkEnd = Math.min(
-chunkStart + CHUNK_SIZE_IN_BYTES,
-videoSizeInBytes - 1
-);
-
-const contentLength = chunkEnd - chunkStart + 1;
-
-const headers = {
-"Content-Range": `bytes ${chunkStart}-${chunkEnd}/${videoSizeInBytes}`,
-"Accept-Ranges": "bytes",
-"Content-Length": contentLength,
-"Content-Type": "video/mp4",
-};
-
-res.writeHead(206, headers);
-const videoStream = fs.createReadStream(videoPath, {
-start: chunkStart,
-end: chunkEnd,
-});
-
-videoStream.pipe(res);
+  const videoSize = fs.statSync(videoPath).size,
+  chunkSize = 1 * 1e6,
+  start = Number(range.replace(/\D/g, "")),
+  end = Math.min(start + chunkSize, videoSize - 1),
+  contentLength = end - start + 1,
+  headers = {
+      "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": contentLength,
+      "Content-Type": "video/mp4"
+  }
+  res.writeHead(206, headers)
+  const stream = fs.createReadStream(videoPath, {
+      start,
+      end
+  })
+  stream.pipe(res)
 })
 .post(upload.single('video') ,
       function(req, res, next){
