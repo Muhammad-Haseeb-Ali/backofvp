@@ -85,7 +85,7 @@ router.route('/:id/video/:type')
   else
   res.status(404).json({ status: "This file is not uploaded yet." });
 })
-.post(upload.single(req.params.type) ,
+.post(upload.single('video') ,
       function(req, res, next){
         console.log("Saved Files: ", req.files)
     res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
