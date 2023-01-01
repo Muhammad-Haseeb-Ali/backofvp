@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     console.log("file method in filename object: ", file)
-    console.log(`saving ${file.originalname} with name ${req.params.types}.mp4`)
-    cb(null, req.params.type + 'mp4')
+    console.log(`saving ${file.originalname}`)
+    cb(null, file.originalname)
   }
 })
 
