@@ -10,6 +10,7 @@ videosDir = directoryPath("/videos")
 if(!fs.existsSync(videosDir))
 fs.mkdirSync(videosDir)
 
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log("file method in destination object: ", file)
@@ -78,12 +79,48 @@ router.route('/:id')
 });
 
 router.route('/:id/video/:type')
-.get(function(req, res) {
-  if(fs.existsSync(`${process.cwd()}/videos/${req.params.id}/${req.params.type}.mp4`)){
-    req.status(200).json({ status: "This file is save in its directory." })
-  }
-  else
-  res.status(404).json({ status: "This file is not uploaded yet." });
+.get((req, res)=>{
+  const range = req.headers.range,
+  videoId = req.params.id,
+  videoType = req.params.type,
+  videoPath = `${videosDir}/${videoId}/${videoType}.mp4`;
+
+
+if(!fs.existsSync(videoPath)){
+console.log('video is not exist')
+return res.status(404).send("Video file is not exist");
+}
+
+if (!range) {
+console.log('range is not define')
+return res.status(400).send("Rang must be provided");
+}
+
+const videoSizeInBytes = fs.statSync(videoPath).size;
+
+const chunkStart = Number(range.replace(/\D/g, ""));
+
+const chunkEnd = Math.min(
+chunkStart + CHUNK_SIZE_IN_BYTES,
+videoSizeInBytes - 1
+);
+
+const contentLength = chunkEnd - chunkStart + 1;
+
+const headers = {
+"Content-Range": `bytes ${chunkStart}-${chunkEnd}/${videoSizeInBytes}`,
+"Accept-Ranges": "bytes",
+"Content-Length": contentLength,
+"Content-Type": "video/mp4",
+};
+
+res.writeHead(206, headers);
+const videoStream = fs.createReadStream(videoPath, {
+start: chunkStart,
+end: chunkEnd,
+});
+
+videoStream.pipe(res);
 })
 .post(upload.single('video') ,
       function(req, res, next){
