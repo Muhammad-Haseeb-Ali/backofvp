@@ -25,7 +25,7 @@ router.route('/:id')
     const proposal = await Proposal.findOne({id: req.params.id})
     if(proposal.publish !== true)
     return res.status(400).json({err:"this proposal is not published yet!"});
-    res.status(200).json({...proposal._doc});
+    res.status(200).json({proposal});
   }
   catch(err){
     res.status(300).json({err})
