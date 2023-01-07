@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const propSchema = new mongoose.Schema({
-    id:Number,
+    id:String,
     client:{
         type:String,
         default: 'you'
