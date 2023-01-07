@@ -2,13 +2,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var CORS = require("cors")
+var CORS = require("cors");
+var dotenv = require("dotenv")
+var {connect} = require("./database/connect")
 
 var indexRouter = require('./routes/index');
 var proposalRouter = require('./routes/proposal');
 
 var app = express(),
     port = process.env.PORT || "8000"
+
+    dotenv.config()
+    connect().catch(error => console.log(error))
 
 app.use(CORS());
 app.use(logger('dev'));
