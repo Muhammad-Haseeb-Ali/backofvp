@@ -20,8 +20,16 @@ router.route('/')
 });
 
 router.route('/:id')
-.get(function(req, res) {
-  res.status(200).json({ status: req.method + ' on /proposal/' + req.params.id });
+.get(async function(req, res) {
+  try{
+    const proposal = await Proposal.findOne({id: req.params.id})
+    if(proposal.publish !== true)
+    return res.status(400).json({err:"this proposal is not published yet!"});
+    res.status(200).json({proposal});
+  }
+  catch(err){
+    res.status(300).json({err})
+  }
 })
 .post(function(req, res){
 
