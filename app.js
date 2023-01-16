@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/proposal', proposalRouter);
-app.get('sendmail', (req, res) => {
+app.get('/sendmail', (req, res) => {
     // sendmail?id="786"&msg="....."
     res.setHeader('Content-Type', 'application/json');
     const { id, msg } = req.query;
