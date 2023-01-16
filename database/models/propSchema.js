@@ -10,11 +10,7 @@ const propSchema = new mongoose.Schema({
         type:String,
         require:true
     },
-    faceLink:{
-        type:String,
-        require:true
-    },
-    screenLink:{
+    videoLink:{
         type:String,
         require:true
     },

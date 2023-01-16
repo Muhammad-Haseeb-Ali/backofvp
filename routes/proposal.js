@@ -41,9 +41,9 @@ router.route('/:id')
       res.end(String(err));
       return;
     }
-    const {id,client,discription,faceLink,screenLink,publish} = fields
-    console.log({id,client,discription,faceLink,screenLink,publish})
-    const proposal = new Proposal({id,client,discription,faceLink,screenLink,publish: publish=='true'?'true':'false'})
+    const {id,client,discription,videoLink,publish} = fields
+    console.log({id,client,discription,videoLink,publish})
+    const proposal = new Proposal({id,client,discription,videoLink,publish: publish=='true'?'true':'false'})
     proposal.save()
     .then(()=>{
         res.status(200).json(proposal)
